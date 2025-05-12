@@ -1,7 +1,41 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
+import { app } from '../services/firebase'
+import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
+import { useEffect, useState } from 'react';
+import { IoIosLogOut } from "react-icons/io";
+
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const Homepage = () => {
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    const auth = getAuth(app);
+    useEffect(() => {
+        onAuthStateChanged(auth, (firebaseUser) => {
+            setUser(firebaseUser);
+            setLoading(false);
+        });
+    }, []);
+
+
+    // logout 
+    const handleLogout = async () => {
+        try {
+            await signOut(auth);
+            toast.success("Logged out successfully!");
+            console.log("User logged out successfully");
+        } catch (error) {
+            console.error("Logout error:", error);
+        }
+    };
+
+
+    // loading 
+    if (loading) return <div>Loading...</div>;
+
     return (
         <div className="h-screen w-full bg-gray-50">
             {/* Header */}
@@ -11,14 +45,43 @@ const Homepage = () => {
                     <span className="text-xl font-bold text-gray-800">Student Portal</span>
                 </div>
 
+
                 {/* Navbar */}
-                <nav className="flex gap-4">
-                    <Link to="/login">
-                        <button className="btn btn-primary">Login</button>
+                <nav className="flex gap-4 justify-center items-center">
+
+                    <Link to="/dashboard">
+                        <button className="btn btn-primary">Dashboard</button>
                     </Link>
-                    <Link to="/signup">
-                        <button className="btn btn-primary">Sign up</button>
-                    </Link>
+                    {user ? (
+                        <div className="flex gap-5 justify-center items-center">
+
+
+                            <Link to="/dashboard">
+                                <button className="btn btn-primary">View Profile </button>
+                            </Link>
+
+                            <div className="avatar cursor-pointer">
+                                <div className="ring-primary ring-offset-base-100 w-12 rounded-full ring-2 ring-offset-2">
+                                    <img src="https://img.daisyui.com/images/profile/demo/spiderperson@192.webp" />
+                                </div>
+                            </div>
+
+                            <div>
+                                <IoIosLogOut className='text-black text-4xl ml-4 cursor-pointer' onClick={handleLogout} />
+                            </div>
+                        </div>
+
+                    ) : (
+                        <div className='flex gap-4'>
+                            <Link to="/login">
+                                <button className="btn btn-primary">Login</button>
+                            </Link>
+                            <Link to="/signup">
+                                <button className="btn btn-primary">Sign up</button>
+                            </Link>
+
+                        </div>
+                    )}
                 </nav>
             </header>
 
@@ -27,6 +90,9 @@ const Homepage = () => {
                 <h1 className="text-4xl font-bold text-gray-800 mb-4">Welcome to the Student Dashboard</h1>
                 <p className="text-lg text-gray-600">Made by : Gajendra </p>
             </main>
+
+            <ToastContainer position="top-right" autoClose={3000} />
+
         </div>
     );
 };
