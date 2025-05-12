@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
-import { app, analytics } from './services/firebase';
+import { app, analytics } from '../services/firebase';
 import { collection, addDoc, getFirestore } from 'firebase/firestore';
 
 const Signup = () => {
@@ -55,8 +55,8 @@ const Signup = () => {
 
             console.log("Document written with ID: ", dbResponse);
 
-            // Redirect to dashboard
-            // navigate('/dashboard');
+            // Redirect to homepage
+            navigate('/');
         } catch (err) {
             console.error(err);
         } finally {
@@ -88,7 +88,6 @@ const Signup = () => {
                         onChange={handleChange}
                         required
                         placeholder="Name"
-                        pattern="[A-Za-z][A-Za-z0-9\-]*"
                         minLength="3"
                         maxLength="30"
                         title="Only letters, numbers or dash"
