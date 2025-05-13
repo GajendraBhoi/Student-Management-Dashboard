@@ -4,6 +4,7 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import AddStudent from './pages/AddStudent';
 import Students from './pages/Students';
+import Profile from './pages/Profile';
 
 function App() {
 
@@ -16,6 +17,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/students" element={<Students />} />
         <Route path='/addStudent' element={<AddStudent />} />
+        <Route path='/profile' element={<Profile />} />
       </Routes>
     </Router>
   );

@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { app } from '../services/firebase'; // adjust the path as per your project
+import Loading from '../components/Loading'
 
 const Login = () => {
     const [formData, setFormData] = useState({
@@ -36,7 +37,9 @@ const Login = () => {
         }
     };
 
+    if (loading) return <Loading />
     return (
+
         <div className="flex items-center justify-center min-h-screen bg-blue-100 text-black">
             <form onSubmit={handleSubmit} className="bg-white shadow-lg rounded-lg p-8 w-96">
                 <h1 className="text-2xl font-bold text-blue-700 text-center">Student Management System</h1>
@@ -77,7 +80,6 @@ const Login = () => {
                     </p>
                     <button
                         type="submit"
-                        disabled={loading}
                         className="btn btn-primary mt-5 w-full"
                     >
                         {loading ? 'Logging in...' : 'Log in'}

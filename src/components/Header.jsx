@@ -62,15 +62,15 @@ const Header = () => {
 
 
 
-                            <Link to="/students">
+                            <Link to="/profile">
                                 <button className="btn btn-primary">View Profile </button>
                             </Link>
 
-                            <div className="avatar cursor-pointer">
+                            <Link className="avatar cursor-pointer" to="/profile">
                                 <div className="ring-primary ring-offset-base-100 w-12 rounded-full ring-2 ring-offset-2">
                                     <img src="https://img.daisyui.com/images/profile/demo/spiderperson@192.webp" />
                                 </div>
-                            </div>
+                            </Link>
 
                             <div>
                                 <IoIosLogOut className='text-black text-4xl ml-4 cursor-pointer' onClick={handleLogout} />

@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword, getAuth } from 'firebase/auth';
 import { app, analytics } from '../services/firebase';
 import { collection, addDoc, getFirestore } from 'firebase/firestore';
+import Loading from '../components/Loading';
 
 const Signup = () => {
     const courses = ['B. Tech', 'BCA', 'M. Tech', 'MCA', 'PHD'];
@@ -65,6 +66,8 @@ const Signup = () => {
             setLoading(false);
         }
     };
+
+    if (loading) return <Loading />
 
     return (
         <div className="flex items-center justify-center min-h-screen bg-blue-100 text-black">
@@ -171,10 +174,9 @@ const Signup = () => {
                     </p>
                     <button
                         type="submit"
-                        disabled={loading}
                         className="btn btn-primary mt-5 w-full py-2"
                     >
-                        {loading ? 'Signing Up...' : 'Sign Up'}
+                        {loading ? 'Signing Up....' : 'Sign Up'}
                     </button>
                 </div>
             </form>

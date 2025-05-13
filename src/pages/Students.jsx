@@ -5,6 +5,7 @@ import { collection, getDoc, getDocs, getFirestore } from 'firebase/firestore';
 import { FiRefreshCcw } from "react-icons/fi";
 import { useNavigate } from 'react-router-dom';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import Loading from '../components/Loading';
 
 const Students = () => {
     const courses = ['B. Tech', 'BCA', 'M. Tech', 'MCA', 'PHD'];
@@ -32,7 +33,7 @@ const Students = () => {
     // filter or search 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        setLoading(true);
         const currentData = await fetchStudents();
         console.log("currenr data ", currentData)
         const filteredStudents = currentData.filter((student) => {
@@ -53,6 +54,7 @@ const Students = () => {
         });
         console.log("filtered", filteredStudents);
         setStudents(filteredStudents);
+        setLoading(false);
     }
 
 
@@ -61,6 +63,7 @@ const Students = () => {
     const db = getFirestore(app);
     const fetchStudents = async () => {
         try {
+            setLoading(true);
             const studentsCollectionRef = collection(db, 'student');
 
             const querySnapshot = await getDocs(studentsCollectionRef);
@@ -101,16 +104,13 @@ const Students = () => {
     }
 
     if (loading) {
-        return <p>Loading students...</p>;
+        return <Loading />;
     }
 
     if (error) {
         return <p style={{ color: 'red' }}>{error}</p>;
     }
 
-    // if (students.length === 0) {
-    //     return <p>No students found.</p>;
-    // }
 
     return (
         <div className="min-h-screen w-full bg-gray-100">

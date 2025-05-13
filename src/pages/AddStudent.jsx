@@ -4,6 +4,7 @@ import { app } from '../services/firebase';
 import { addDoc, collection, getDocs, getFirestore } from 'firebase/firestore';
 import { Link, useNavigate } from 'react-router-dom';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import Loading from '../components/Loading';
 
 const Dashboard = () => {
     const courses = ['B. Tech', 'BCA', 'M. Tech', 'MCA', 'PhD'];
@@ -36,8 +37,6 @@ const Dashboard = () => {
                 course: formData.course,
             });
             console.log("added student ", res);
-
-
             setFormData({ name: '', email: '', course: '' });
         } catch (err) {
             console.error('Error adding student:', err);
@@ -57,11 +56,11 @@ const Dashboard = () => {
         return () => unsub();
     }, [auth, navigate]);
 
-    if (loading) return <p className="text-black">Loading students...</p>;
+    if (loading) return <Loading />;
     if (error) return <p className="text-black">{error}</p>;
 
     return (
-        <div className="w-full bg-gray-100">
+        <div className="w-full bg-gray-100 h-screen">
             <Header />
 
             <div className="flex justify-center items-center py-10">
@@ -121,7 +120,6 @@ const Dashboard = () => {
                     <div className="mt-6 text-center">
                         <button
                             type="submit"
-                            disabled={loading}
                             className="btn btn-primary mt-5 w-full py-2 font-semibold rounded-lg text-white"
                         >
                             {loading ? 'Adding Student...' : 'Add Student'}
