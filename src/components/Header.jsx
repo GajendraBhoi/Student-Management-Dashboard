@@ -50,14 +50,19 @@ const Header = () => {
                 {/* Navbar */}
                 <nav className="flex gap-4 justify-center items-center">
 
-                    <Link to={user ? "/dashboard" : "/login"}>
-                        <button className="btn btn-primary">Dashboard</button>
+                    <Link to={user ? "/students" : "/login"}>
+                        <button className="btn btn-primary">Students</button>
+                    </Link>
+
+                    <Link to="/addStudent">
+                        <button className="btn btn-primary">Add Student</button>
                     </Link>
                     {user ? (
                         <div className="flex gap-5 justify-center items-center">
 
 
-                            <Link to="/dashboard">
+
+                            <Link to="/students">
                                 <button className="btn btn-primary">View Profile </button>
                             </Link>
 

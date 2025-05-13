@@ -6,7 +6,7 @@ import { FiRefreshCcw } from "react-icons/fi";
 import { useNavigate } from 'react-router-dom';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 
-const Dashboard = () => {
+const Students = () => {
     const courses = ['B. Tech', 'BCA', 'M. Tech', 'MCA', 'PHD'];
     const [formData, setFormData] = useState({
         name: '',
@@ -30,10 +30,12 @@ const Dashboard = () => {
     };
 
     // filter or search 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const filteredStudents = students.filter((student) => {
+        const currentData = await fetchStudents();
+        console.log("currenr data ", currentData)
+        const filteredStudents = currentData.filter((student) => {
 
             if (formData.name && !formData.course) {
                 return student.name.toLowerCase().includes(formData.name.toLowerCase());
@@ -55,32 +57,33 @@ const Dashboard = () => {
 
 
     // fetch students 
+
+    const db = getFirestore(app);
+    const fetchStudents = async () => {
+        try {
+            const studentsCollectionRef = collection(db, 'student');
+
+            const querySnapshot = await getDocs(studentsCollectionRef);
+
+            const studentsData = querySnapshot.docs.map(doc => ({
+                id: doc.id,
+                ...doc.data()
+            }));
+            setLoading(false);
+            console.log("student data is", studentsData)
+            setStudents(studentsData);
+
+            // since the data is not in sync  (trfr returning it)
+            return studentsData;
+        } catch (err) {
+            console.error("Error fetching students: ", err);
+            setError("Failed to load students.");
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
-        const db = getFirestore(app);
-        const fetchStudents = async () => {
-            try {
-                const studentsCollectionRef = collection(db, 'student');
-
-                const querySnapshot = await getDocs(studentsCollectionRef);
-
-                const studentsData = querySnapshot.docs.map(doc => ({
-                    id: doc.id,
-                    ...doc.data()
-                }));
-
-                setStudents(studentsData);
-                console.log(studentsData)
-                setLoading(false);
-
-            } catch (err) {
-                console.error("Error fetching students: ", err);
-                setError("Failed to load students.");
-                setLoading(false);
-            }
-        };
-
         fetchStudents();
-
     }, []);
 
     const [user, setUser] = useState(null);
@@ -117,29 +120,23 @@ const Dashboard = () => {
             {/* Students List */}
             <div className="max-w-4xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-md text-black ">
                 <form className="flex flex-col md:flex-row gap-4 items-center justify-center center" onSubmit={handleSubmit}>
-                    {/* Course Dropdown */}
-                    <div className="w-full md:w-1/5">
-                        <label className="block mt-4 w-full">
-                            <span className="text-gray">Course </span>
-                            <div className="dropdown dropdown-hover ml-2 ">
-                                <div tabIndex={0} role="button" className="btn m-1 bg-white text-black w-20">
-                                    {formData.course || 'Select course'}
-                                </div>
-                                <ul className="dropdown-content bg-base-100 rounded-box p-2 bg-white h-40 w-40 overflow-y-scroll flex flex-col">
-                                    {courses.map(course => (
-                                        <li
-                                            key={course}
-                                            onClick={() => handleCourseSelect(course)}
-                                            className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-black"
-                                        >
-                                            {course}
-                                        </li>
-                                    ))}
-                                </ul>
 
-                            </div>
-                        </label>
-                    </div>
+                    {/* Course */}
+                    <label className="block ">
+                        <span className="text-black">Course</span>
+                        <select
+                            name="course"
+                            value={formData.course}
+                            onChange={handleChange}
+                            required
+                            className="p-2 w-full border rounded-lg focus:ring-2 focus:ring-black focus:outline-none text-black"
+                        >
+                            <option value="" disabled>-- Select Course --</option>
+                            {courses.map(course => (
+                                <option key={course} value={course}>{course}</option>
+                            ))}
+                        </select>
+                    </label>
 
                     {/* Name Input */}
                     <div className="w-full md:w-3/5">
@@ -169,7 +166,17 @@ const Dashboard = () => {
                     </div>
 
                     {/* refresh  */}
-                    <FiRefreshCcw className='text-2xl mt-4.5 cursor-pointer on' onClick={() => window.location.reload()
+                    <FiRefreshCcw className='text-2xl mt-4.5 cursor-pointer on' onClick={() => {
+
+                        // empty the form 
+                        setFormData({
+                            name: '',
+                            course: ''
+                        })
+
+                        // refresh the data
+                        fetchStudents();
+                    }
                     } />
                 </form>
 
@@ -197,4 +204,4 @@ const Dashboard = () => {
     );
 };
 
-export default Dashboard;
+export default Students;

@@ -50,7 +50,9 @@ const Signup = () => {
             // adding data to database 
             const dbResponse = await addDoc(collection(db, "student"), {
                 name: formData.name,
+                email: formData.email,
                 course: formData.course,
+
             });
 
             console.log("Document written with ID: ", dbResponse);
@@ -143,26 +145,21 @@ const Signup = () => {
                     />
                 </label>
 
-                {/* course  */}
+                {/* Course */}
                 <label className="block mt-4">
-                    <span className="text-gray">Course </span>
-                    <div className="dropdown dropdown-hover ml-2 ">
-                        <div tabIndex={0} role="button" className="btn m-1 bg-white text-black">
-                            {formData.course || 'Select course'}
-                        </div>
-                        <ul className="dropdown-content bg-base-100 rounded-box p-2 bg-white h-40 w-40 overflow-y-scroll flex flex-col">
-                            {courses.map(course => (
-                                <li
-                                    key={course}
-                                    onClick={() => handleCourseSelect(course)}
-                                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                                >
-                                    {course}
-                                </li>
-                            ))}
-                        </ul>
-
-                    </div>
+                    <span className="text-black">Course</span>
+                    <select
+                        name="course"
+                        value={formData.course}
+                        onChange={handleChange}
+                        required
+                        className="mt-1 p-2 w-full border rounded-lg focus:ring-2 focus:ring-black focus:outline-none text-black"
+                    >
+                        <option value="" disabled>-- Select Course --</option>
+                        {courses.map(course => (
+                            <option key={course} value={course}>{course}</option>
+                        ))}
+                    </select>
                 </label>
 
                 <div className="mt-6 text-center">
