@@ -4,7 +4,10 @@ import { app } from '../services/firebase';
 import { addDoc, collection, getDocs, getFirestore } from 'firebase/firestore';
 import { Link, useNavigate } from 'react-router-dom';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import Loading from '../components/Loading';
+// import Loading from '../components/Loading';
+
+// toast 
+import { toast } from 'react-toastify';
 
 const Dashboard = () => {
     const courses = ['B. Tech', 'BCA', 'M. Tech', 'MCA', 'PhD'];
@@ -38,8 +41,11 @@ const Dashboard = () => {
             });
             console.log("added student ", res);
             setFormData({ name: '', email: '', course: '' });
+            toast.success("Student Added");
+
         } catch (err) {
             console.error('Error adding student:', err);
+            toast.error("Failed to add student")
             setError('Failed to add student.');
         } finally {
             setLoading(false);
@@ -56,7 +62,7 @@ const Dashboard = () => {
         return () => unsub();
     }, [auth, navigate]);
 
-    if (loading) return <Loading />;
+    // if (loading) return <Loading />;
     if (error) return <p className="text-black">{error}</p>;
 
     return (

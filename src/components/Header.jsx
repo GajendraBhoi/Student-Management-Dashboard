@@ -4,8 +4,7 @@ import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { IoIosLogOut } from "react-icons/io";
 
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 
 
 
@@ -30,13 +29,15 @@ const Header = () => {
             toast.success("Logged out successfully!");
             console.log("User logged out successfully");
             navigate('/')
+            // setTimeout(() => {
+            //     navigate('/');
+            // }, 1000);
 
         } catch (error) {
             console.error("Logout error:", error);
         }
     };
 
-    if (loading) return <div>Loading...</div>;
 
     return (
         <div>
@@ -51,11 +52,11 @@ const Header = () => {
                 <nav className="flex gap-4 justify-center items-center">
 
                     <Link to={user ? "/students" : "/login"}>
-                        <button className="btn btn-primary">Students</button>
+                        <button className="btn">Students</button>
                     </Link>
 
                     <Link to="/addStudent">
-                        <button className="btn btn-primary">Add Student</button>
+                        <button className="btn">Add Student</button>
                     </Link>
                     {user ? (
                         <div className="flex gap-5 justify-center items-center">
@@ -63,7 +64,7 @@ const Header = () => {
 
 
                             <Link to="/profile">
-                                <button className="btn btn-primary">View Profile </button>
+                                <button className="btn">View Profile </button>
                             </Link>
 
                             <Link className="avatar cursor-pointer" to="/profile">
@@ -90,7 +91,6 @@ const Header = () => {
                     )}
                 </nav>
             </header>
-            <ToastContainer position="top-right" autoClose={3000} />
         </div>
     )
 }

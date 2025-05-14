@@ -6,20 +6,28 @@ import AddStudent from './pages/AddStudent';
 import Students from './pages/Students';
 import Profile from './pages/Profile';
 
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 function App() {
 
   return (
 
-    <Router>
-      <Routes>
-        <Route path="/" element={<Homepage />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/students" element={<Students />} />
-        <Route path='/addStudent' element={<AddStudent />} />
-        <Route path='/profile' element={<Profile />} />
-      </Routes>
-    </Router>
+    <div>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Homepage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/students" element={<Students />} />
+          <Route path='/addStudent' element={<AddStudent />} />
+          <Route path='/profile' element={<Profile />} />
+        </Routes>
+      </Router>
+
+      <ToastContainer position="top-right" autoClose={2000} />
+    </div>
+
   );
 }
 

@@ -183,13 +183,24 @@ const Students = () => {
                 {/* data  */}
                 <div>
                     <h2 className="text-xl font-semibold mb-4 mt-6">Student List</h2>
+                    <h3 className="text-xl font-semibold mb-4 mt-6 flex gap-3 justify-around w-full divide-y divide-gray-200" >
+                        <p>Profile</p>
+                        <p>Name</p>
+                        <p>course</p>
+                    </h3>
+
                     {students.length > 0 ? (
                         <ul className="divide-y divide-gray-200">
                             {students.map(student => (
                                 <li key={student.id} className="py-4 flex justify-between items-center">
-                                    <div>
-                                        <p className="text-lg font-medium text-gray-900">{student.name}</p>
-                                        <p className="text-sm text-gray-500">{student.course}</p>
+                                    <div className='flex gap-3 justify-around w-full'>
+                                        <div className="avatar">
+                                            <div className="ring-primary ring-offset-base-100 w-12 rounded-full ring-2 ring-offset-2">
+                                                <img src={"https://img.daisyui.com/images/profile/demo/spiderperson@192.webp"} />
+                                            </div>
+                                        </div>
+                                        <p className="text-lg  text-gray-900">{student.name}</p>
+                                        <p className="text-sm text-gray-900">{student.course}</p>
                                     </div>
                                 </li>
                             ))}
